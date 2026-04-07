@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Development — Danrey</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--accent:#A7F175;--accent2:#7CDB3A;--dark:#060809;--surface:#0D1117;--card:#111820;--text:#E2EAD0;--muted:#607048;}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--dark);color:var(--text);cursor:none;overflow-x:hidden;}
+#cursor{position:fixed;width:10px;height:10px;border-radius:50%;background:var(--accent);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+#cursor-ring{position:fixed;width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(167,241,117,.4);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);}
+.grain{position:fixed;inset:0;pointer-events:none;z-index:200;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:128px;}
+
+/* Scanlines effect */
+body::before{content:’’;position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(167,241,117,.012) 2px,rgba(167,241,117,.012) 4px);pointer-events:none;z-index:199;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:24px 56px;background:rgba(6,8,9,.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(167,241,117,.06);}
+.nav-brand{font-family:‘Bebas Neue’,sans-serif;font-size:24px;letter-spacing:.15em;color:#fff;text-decoration:none;}
+.nav-back{font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s;}
+.nav-back:hover{color:var(–accent);}
+.nav-skill-tag{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(–accent);background:rgba(167,241,117,.07);padding:4px 12px;border-radius:2px;border:1px solid rgba(167,241,117,.2);}
+
+.skill-hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:120px 56px 80px;position:relative;overflow:hidden;}
+.hero-code-bg{
+position:absolute;inset:0;overflow:hidden;opacity:.07;
+font-family:‘JetBrains Mono’,monospace;font-size:13px;color:var(–accent);
+white-space:pre;padding:100px 56px;line-height:1.8;pointer-events:none;
+}
+.skill-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 50% 70% at 80% 50%,rgba(167,241,117,.1) 0%,rgba(167,241,117,.02) 50%,transparent 70%);}
+.skill-hero-num{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(200px,25vw,360px);color:rgba(167,241,117,.04);position:absolute;right:-20px;top:50%;transform:translateY(-50%);line-height:1;pointer-events:none;}
+.skill-category{font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(–accent);margin-bottom:20px;font-family:‘JetBrains Mono’,monospace;}
+.skill-title{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(64px,10vw,140px);line-height:.95;letter-spacing:-.01em;color:#fff;margin-bottom:32px;}
+.skill-desc{font-size:18px;color:var(–muted);max-width:580px;line-height:1.7;margin-bottom:48px;}
+.hero-stats{display:flex;gap:56px;}
+.stat{display:flex;flex-direction:column;gap:4px;}
+.stat-num{font-family:‘Bebas Neue’,sans-serif;font-size:48px;color:var(–accent);line-height:1;}
+.stat-label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(–muted);}
+.divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(167,241,117,.2),transparent);}
+.section{padding:100px 56px;}
+.section-label{font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(–accent);margin-bottom:20px;font-family:‘JetBrains Mono’,monospace;}
+.section-title{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(40px,5vw,72px);color:#fff;margin-bottom:48px;line-height:1;}
+
+/* Tech stack */
+.stack-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:80px;}
+.stack-item{background:var(–card);border:1px solid rgba(167,241,117,.08);border-radius:12px;padding:28px 24px;transition:border-color .3s,transform .25s,background .3s;position:relative;overflow:hidden;}
+.stack-item:hover{border-color:rgba(167,241,117,.3);transform:translateY(-4px);background:#141E10;}
+.stack-icon{font-size:32px;margin-bottom:14px;display:block;}
+.stack-name{font-weight:700;font-size:16px;color:#fff;margin-bottom:4px;}
+.stack-type{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(–accent);margin-bottom:12px;font-family:‘JetBrains Mono’,monospace;}
+.stack-bar{height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;}
+.stack-fill{height:100%;background:linear-gradient(90deg,var(–accent2),var(–accent));border-radius:2px;width:0;transition:width 1.2s cubic-bezier(.2,.8,.2,1);}
+
+/* Projects */
+.projects-list{display:flex;flex-direction:column;gap:24px;}
+.project-card{
+background:var(–card);border:1px solid rgba(167,241,117,.06);
+border-radius:16px;padding:40px;
+display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;
+transition:border-color .3s,transform .25s;cursor:pointer;text-decoration:none;
+}
+.project-card:hover{border-color:rgba(167,241,117,.25);transform:translateX(6px);}
+.proj-number{font-family:‘JetBrains Mono’,monospace;font-size:13px;color:var(–accent);margin-bottom:12px;letter-spacing:.1em;}
+.proj-title{font-family:‘Bebas Neue’,sans-serif;font-size:36px;color:#fff;letter-spacing:.04em;margin-bottom:12px;}
+.proj-desc{font-size:15px;color:var(–muted);line-height:1.65;max-width:600px;}
+.proj-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+.proj-tag{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(–accent);background:rgba(167,241,117,.07);padding:4px 10px;border-radius:2px;font-family:‘JetBrains Mono’,monospace;}
+.proj-arrow{font-size:32px;color:rgba(167,241,117,.25);transition:color .2s,transform .2s;}
+.project-card:hover .proj-arrow{color:var(–accent);transform:translateX(4px);}
+
+/* Code snippet */
+.code-block{background:var(–surface);border:1px solid rgba(167,241,117,.1);border-radius:12px;overflow:hidden;margin-bottom:80px;}
+.code-header{background:rgba(167,241,117,.04);padding:14px 20px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(167,241,117,.08);}
+.code-dot{width:12px;height:12px;border-radius:50%;}
+.code-filename{font-family:‘JetBrains Mono’,monospace;font-size:13px;color:var(–muted);margin-left:8px;}
+.code-body{padding:32px;font-family:‘JetBrains Mono’,monospace;font-size:14px;line-height:2;overflow-x:auto;}
+.kw{color:#FF79C6;}
+.fn{color:#50FA7B;}
+.str{color:#F1FA8C;}
+.cm{color:#6272A4;}
+.num{color:#BD93F9;}
+.var{color:var(–accent);}
+
+.page-cta{padding:100px 56px;text-align:center;background:linear-gradient(180deg,var(–dark) 0%,rgba(124,219,58,.04) 50%,var(–dark) 100%);}
+.page-cta h2{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(50px,7vw,100px);color:#fff;margin-bottom:20px;}
+.page-cta p{font-size:17px;color:var(–muted);max-width:480px;margin:0 auto 40px;line-height:1.7;}
+.btn-hire{display:inline-flex;align-items:center;gap:12px;background:var(–accent);color:#060809;padding:16px 40px;border-radius:4px;font-family:‘Bebas Neue’,sans-serif;font-size:20px;letter-spacing:.1em;text-decoration:none;font-weight:900;transition:background .2s,box-shadow .2s,transform .2s;}
+.btn-hire:hover{background:#BFF885;box-shadow:0 8px 40px rgba(167,241,117,.3);transform:translateY(-2px);}
+.back-btn{display:inline-flex;align-items:center;gap:8px;margin-top:24px;color:var(–muted);text-decoration:none;font-size:14px;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;}
+.back-btn:hover{color:var(–accent);}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+</style>
+
+</head>
+<body>
+<div class="grain"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <a href="index.html" class="nav-brand">DANREY</a>
+  <span class="nav-skill-tag">Web Development</span>
+  <a href="index.html" class="nav-back">← Back</a>
+</nav>
+
+<section class="skill-hero">
+  <div class="hero-code-bg">const danrey = {
+  passion: 'building experiences',
+  stack: ['HTML', 'CSS', 'JavaScript', 'React'],
+  philosophy: 'code is craft',
+  available: true,
+
+build: (idea) => {
+return idea
+.map(pixel => pixel * imagination)
+.filter(boring => false)
+.reduce((acc, magic) => acc + magic);
+}
+};</div>
+
+  <div class="skill-hero-bg"></div>
+  <div class="skill-hero-num">04</div>
+  <p class="skill-category reveal">// skill_04 / 04 — Engineering</p>
+  <h1 class="skill-title reveal">Web Dev-<br>elopment</h1>
+  <p class="skill-desc reveal">I write code the way I design — with intention and craft. From pixel-perfect landing pages to full-stack applications, every line of code serves the user experience first.</p>
+  <div class="hero-stats reveal">
+    <div class="stat"><span class="stat-num">4+</span><span class="stat-label">Years Building</span></div>
+    <div class="stat"><span class="stat-num">60+</span><span class="stat-label">Sites Launched</span></div>
+    <div class="stat"><span class="stat-num">99%</span><span class="stat-label">Client Satisfaction</span></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<section class="section">
+  <p class="section-label reveal">// tech_stack</p>
+  <h2 class="section-title reveal">Tools & Technologies</h2>
+  <div class="stack-grid">
+    <div class="stack-item reveal"><span class="stack-icon">🌐</span><div class="stack-name">HTML / CSS</div><div class="stack-type">Foundation</div><div class="stack-bar"><div class="stack-fill" data-w="98"></div></div></div>
+    <div class="stack-item reveal"><span class="stack-icon">⚡</span><div class="stack-name">JavaScript</div><div class="stack-type">Core Language</div><div class="stack-bar"><div class="stack-fill" data-w="92"></div></div></div>
+    <div class="stack-item reveal"><span class="stack-icon">⚛️</span><div class="stack-name">React</div><div class="stack-type">UI Framework</div><div class="stack-bar"><div class="stack-fill" data-w="85"></div></div></div>
+    <div class="stack-item reveal"><span class="stack-icon">🎨</span><div class="stack-name">Tailwind CSS</div><div class="stack-type">Styling</div><div class="stack-bar"><div class="stack-fill" data-w="90"></div></div></div>
+    <div class="stack-item reveal"><span class="stack-icon">🟢</span><div class="stack-name">Node.js</div><div class="stack-type">Backend</div><div class="stack-bar"><div class="stack-fill" data-w="78"></div></div></div>
+    <div class="stack-item reveal"><span class="stack-icon">🗄</span><div class="stack-name">Supabase / Firebase</div><div class="stack-type">Database</div><div class="stack-bar"><div class="stack-fill" data-w="82"></div></div></div>
+    <div class="stack-item reveal"><span class="stack-icon">▲</span><div class="stack-name">Vercel / Netlify</div><div class="stack-type">Deployment</div><div class="stack-bar"><div class="stack-fill" data-w="95"></div></div></div>
+    <div class="stack-item reveal"><span class="stack-icon">🔍</span><div class="stack-name">SEO & Analytics</div><div class="stack-type">Growth</div><div class="stack-bar"><div class="stack-fill" data-w="88"></div></div></div>
+  </div>
+
+  <!-- Code snippet -->
+
+  <p class="section-label reveal">// code_sample</p>
+  <h2 class="section-title reveal">Clean Code, Real Results</h2>
+  <div class="code-block reveal">
+    <div class="code-header">
+      <div class="code-dot" style="background:#FF5F57"></div>
+      <div class="code-dot" style="background:#FFBD2E"></div>
+      <div class="code-dot" style="background:#28CA41"></div>
+      <span class="code-filename">carousel.js — Affinity Landing Page</span>
+    </div>
+    <div class="code-body">
+<span class="cm">// Scroll-driven 3D card carousel</span>
+<span class="cm">// Smooth lerp animation, perspective depth</span>
+
+<span class="kw">function</span> <span class="fn">updateCards</span>(<span class="var">angle</span>) {
+<span class="var">cards</span>.<span class="fn">forEach</span>((<span class="var">card</span>, <span class="var">i</span>) => {
+<span class="kw">const</span> <span class="var">a</span> = <span class="var">angle</span> + (<span class="var">i</span> / <span class="var">N</span>) * <span class="fn">Math.PI</span> * <span class="num">2</span>;
+<span class="kw">const</span> <span class="var">z</span> = <span class="fn">Math.sin</span>(<span class="var">a</span>) * <span class="num">180</span>;
+<span class="kw">const</span> <span class="var">scale</span> = <span class="num">0.65</span> + <span class="num">0.55</span> * ((<span class="fn">Math.sin</span>(<span class="var">a</span>) + <span class="num">1</span>) / <span class="num">2</span>);
+<span class="var">card</span>.style.<span class="var">transform</span> =
+<span class="str">`translateZ(${z}px) scale(${scale})`</span>;
+});
+}
+</div>
+
+  </div>
+</section>
+<div class="divider"></div>
+
+<section class="section">
+  <p class="section-label reveal">// projects</p>
+  <h2 class="section-title reveal">Recent Builds</h2>
+  <div class="projects-list">
+    <a href="#" class="project-card reveal">
+      <div><div class="proj-number">project_01.js</div><div class="proj-title">Affinity Creative Showcase</div><p class="proj-desc">Full-page clone of affinity.studio with scroll-driven animations, 3D card carousel, dust particles, and custom cursor — all in vanilla HTML/CSS/JS.</p><div class="proj-tags"><span class="proj-tag">HTML</span><span class="proj-tag">CSS</span><span class="proj-tag">Vanilla JS</span><span class="proj-tag">CSS3D</span></div></div>
+      <span class="proj-arrow">→</span>
+    </a>
+    <a href="#" class="project-card reveal">
+      <div><div class="proj-number">project_02.js</div><div class="proj-title">TerraFlow E-Commerce Platform</div><p class="proj-desc">Full-stack React + Node.js e-commerce with Stripe integration, custom CMS, and performance-optimised product pages. 98 Lighthouse score.</p><div class="proj-tags"><span class="proj-tag">React</span><span class="proj-tag">Node.js</span><span class="proj-tag">Stripe</span><span class="proj-tag">MongoDB</span></div></div>
+      <span class="proj-arrow">→</span>
+    </a>
+    <a href="#" class="project-card reveal">
+      <div><div class="proj-number">project_03.js</div><div class="proj-title">Lumé Brand Website & CMS</div><p class="proj-desc">Headless CMS-driven brand site with Sanity.io backend, animated product reveals, and SEO-first architecture driving 280% organic growth.</p><div class="proj-tags"><span class="proj-tag">Next.js</span><span class="proj-tag">Sanity</span><span class="proj-tag">Framer Motion</span></div></div>
+      <span class="proj-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<section class="page-cta">
+  <h2 class="reveal">Let's Ship<br>Something Great</h2>
+  <p class="reveal">Have an idea for a web experience? Let's build something that performs as beautifully as it looks.</p>
+  <a href="mailto:hello@danrey.com" class="btn-hire reveal">Start Building</a><br>
+  <a href="index.html" class="back-btn reveal">← Return to Portfolio</a>
+</section>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+(function ar(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ar);})();
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+const bars=document.querySelectorAll('.stack-fill');
+const barObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.style.width=e.target.dataset.w+'%';else e.target.style.width='0';});},{threshold:.3});
+bars.forEach(b=>{b.style.width='0';barObs.observe(b);});
+</script>
+
+</body>
+</html>

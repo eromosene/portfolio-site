@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graphics Design — Danrey</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --accent:#FF4500;
+  --accent2:#FF8C42;
+  --dark:#0A0A0A;
+  --surface:#141414;
+  --card:#1C1C1C;
+  --text:#F0E8E0;
+  --muted:#888;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--dark);color:var(--text);cursor:none;overflow-x:hidden;}
+
+/* cursor */
+#cursor{position:fixed;width:10px;height:10px;border-radius:50%;background:var(–accent);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+#cursor-ring{position:fixed;width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(255,69,0,.4);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+
+/* noise */
+.grain{position:fixed;inset:0;pointer-events:none;z-index:200;opacity:.03;
+background-image:url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘n’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23n)’/%3E%3C/svg%3E”);
+background-size:128px;}
+
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:24px 56px;background:rgba(10,10,10,.8);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.04);}
+.nav-brand{font-family:‘Bebas Neue’,sans-serif;font-size:24px;letter-spacing:.15em;color:#fff;text-decoration:none;}
+.nav-back{font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.5);text-decoration:none;display:flex;align-items:center;gap:8px;transition:color .2s;}
+.nav-back:hover{color:var(–accent);}
+.nav-skill-tag{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(–accent);background:rgba(255,69,0,.1);padding:4px 12px;border-radius:2px;border:1px solid rgba(255,69,0,.3);}
+
+/* hero */
+.skill-hero{
+min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;
+padding:120px 56px 80px;position:relative;overflow:hidden;
+}
+.skill-hero-bg{
+position:absolute;inset:0;
+background:radial-gradient(ellipse 70% 70% at 70% 40%,rgba(255,69,0,.18) 0%,rgba(255,69,0,.04) 50%,transparent 70%);
+}
+.skill-hero-num{
+font-family:‘Bebas Neue’,sans-serif;font-size:clamp(200px,25vw,360px);
+color:rgba(255,69,0,.06);position:absolute;right:-20px;top:50%;
+transform:translateY(-50%);line-height:1;pointer-events:none;
+letter-spacing:-.02em;
+}
+.skill-category{font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(–accent);margin-bottom:20px;}
+.skill-title{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(64px,10vw,140px);line-height:.95;letter-spacing:-.01em;color:#fff;margin-bottom:32px;}
+.skill-desc{font-size:18px;color:var(–muted);max-width:580px;line-height:1.7;margin-bottom:48px;}
+.hero-stats{display:flex;gap:56px;}
+.stat{display:flex;flex-direction:column;gap:4px;}
+.stat-num{font-family:‘Bebas Neue’,sans-serif;font-size:48px;color:var(–accent);line-height:1;}
+.stat-label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(–muted);}
+
+/* divider */
+.divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,69,0,.3),transparent);margin:0;}
+
+/* skills section */
+.section{padding:100px 56px;}
+.section-label{font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(–accent);margin-bottom:20px;}
+.section-title{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(40px,5vw,72px);color:#fff;margin-bottom:48px;line-height:1;}
+
+/* tools grid */
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;margin-bottom:80px;}
+.tool-item{
+background:var(–card);border:1px solid rgba(255,255,255,.05);
+border-radius:12px;padding:24px 20px;
+display:flex;flex-direction:column;gap:12px;
+transition:border-color .2s,transform .25s;
+position:relative;overflow:hidden;
+}
+.tool-item::before{content:’’;position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,69,0,.05) 0%,transparent 60%);opacity:0;transition:opacity .3s;}
+.tool-item:hover{border-color:rgba(255,69,0,.3);transform:translateY(-4px);}
+.tool-item:hover::before{opacity:1;}
+.tool-icon{font-size:28px;}
+.tool-name{font-size:15px;font-weight:600;color:#fff;}
+.tool-level{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
+.tool-fill{height:100%;background:linear-gradient(90deg,var(–accent),var(–accent2));border-radius:2px;transition:width 1.2s cubic-bezier(.2,.8,.2,1);}
+
+/* work grid */
+.work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.work-item{border-radius:16px;overflow:hidden;position:relative;aspect-ratio:4/3;cursor:pointer;group:;}
+.work-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.8,.2,1),filter .4s;}
+.work-item:hover img{transform:scale(1.06);filter:brightness(1.1);}
+.work-overlay{
+position:absolute;inset:0;
+background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,0) 50%);
+opacity:0;transition:opacity .3s;
+display:flex;flex-direction:column;justify-content:flex-end;padding:24px;
+}
+.work-item:hover .work-overlay{opacity:1;}
+.work-name{font-weight:700;font-size:18px;color:#fff;}
+.work-type{font-size:12px;color:var(–accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+
+/* process */
+.process-list{display:flex;flex-direction:column;gap:0;}
+.process-step{
+display:flex;gap:40px;align-items:flex-start;
+padding:40px 0;border-bottom:1px solid rgba(255,255,255,.06);
+}
+.step-num{font-family:‘Bebas Neue’,sans-serif;font-size:72px;color:rgba(255,69,0,.15);line-height:1;min-width:100px;}
+.step-content h3{font-family:‘Bebas Neue’,sans-serif;font-size:28px;color:#fff;margin-bottom:12px;letter-spacing:.04em;}
+.step-content p{font-size:15px;color:var(–muted);line-height:1.7;max-width:600px;}
+
+/* CTA */
+.page-cta{
+padding:100px 56px;text-align:center;
+background:linear-gradient(180deg,var(–dark) 0%,rgba(255,40,0,.04) 50%,var(–dark) 100%);
+}
+.page-cta h2{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(50px,7vw,100px);color:#fff;margin-bottom:20px;}
+.page-cta p{font-size:17px;color:var(–muted);max-width:480px;margin:0 auto 40px;line-height:1.7;}
+.btn-hire{
+display:inline-flex;align-items:center;gap:12px;
+background:var(–accent);color:#fff;padding:16px 40px;
+border-radius:4px;font-family:‘Bebas Neue’,sans-serif;
+font-size:20px;letter-spacing:.1em;text-decoration:none;
+transition:background .2s,box-shadow .2s,transform .2s;
+}
+.btn-hire:hover{background:#FF6020;box-shadow:0 8px 40px rgba(255,69,0,.4);transform:translateY(-2px);}
+.back-btn{
+display:inline-flex;align-items:center;gap:8px;margin-top:24px;
+color:var(–muted);text-decoration:none;font-size:14px;letter-spacing:.1em;text-transform:uppercase;
+transition:color .2s;
+}
+.back-btn:hover{color:var(–accent);}
+
+/* fade-in */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+</style>
+
+</head>
+<body>
+<div class="grain"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <a href="index.html" class="nav-brand">DANREY</a>
+  <span class="nav-skill-tag">Graphics Design</span>
+  <a href="index.html" class="nav-back">← Back to Portfolio</a>
+</nav>
+
+<!-- HERO -->
+
+<section class="skill-hero">
+  <div class="skill-hero-bg"></div>
+  <div class="skill-hero-num">01</div>
+  <p class="skill-category reveal">Skill 01 / 04 — Visual Communication</p>
+  <h1 class="skill-title reveal">Graphics<br>Design</h1>
+  <p class="skill-desc reveal">From identity systems to full campaign visuals — I design with intent. Every pixel carries purpose, every colour evokes emotion. Clean, bold, unforgettable.</p>
+  <div class="hero-stats reveal">
+    <div class="stat"><span class="stat-num">6+</span><span class="stat-label">Years Active</span></div>
+    <div class="stat"><span class="stat-num">120+</span><span class="stat-label">Projects Done</span></div>
+    <div class="stat"><span class="stat-num">40+</span><span class="stat-label">Happy Clients</span></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- TOOLS -->
+
+<section class="section">
+  <p class="section-label reveal">Toolbox</p>
+  <h2 class="section-title reveal">Software & Skills</h2>
+  <div class="tools-grid">
+    <div class="tool-item reveal"><span class="tool-icon">🎨</span><span class="tool-name">Affinity Designer</span><div class="tool-level"><div class="tool-fill" data-w="96"></div></div></div>
+    <div class="tool-item reveal"><span class="tool-icon">🖼</span><span class="tool-name">Affinity Photo</span><div class="tool-level"><div class="tool-fill" data-w="92"></div></div></div>
+    <div class="tool-item reveal"><span class="tool-icon">📐</span><span class="tool-name">Affinity Publisher</span><div class="tool-level"><div class="tool-fill" data-w="88"></div></div></div>
+    <div class="tool-item reveal"><span class="tool-icon">✍️</span><span class="tool-name">Adobe Illustrator</span><div class="tool-level"><div class="tool-fill" data-w="85"></div></div></div>
+    <div class="tool-item reveal"><span class="tool-icon">🖌</span><span class="tool-name">Adobe Photoshop</span><div class="tool-level"><div class="tool-fill" data-w="90"></div></div></div>
+    <div class="tool-item reveal"><span class="tool-icon">📦</span><span class="tool-name">Brand Identity</span><div class="tool-level"><div class="tool-fill" data-w="95"></div></div></div>
+    <div class="tool-item reveal"><span class="tool-icon">📰</span><span class="tool-name">Print Design</span><div class="tool-level"><div class="tool-fill" data-w="88"></div></div></div>
+    <div class="tool-item reveal"><span class="tool-icon">🎯</span><span class="tool-name">Motion Graphics</span><div class="tool-level"><div class="tool-fill" data-w="78"></div></div></div>
+  </div>
+
+  <!-- WORK -->
+
+  <p class="section-label reveal">Portfolio</p>
+  <h2 class="section-title reveal">Selected Work</h2>
+  <div class="work-grid">
+    <div class="work-item reveal">
+      <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80" alt="Brand Identity">
+      <div class="work-overlay"><div class="work-type">Brand Identity</div><div class="work-name">Apex Rebrand</div></div>
+    </div>
+    <div class="work-item reveal">
+      <img src="https://images.unsplash.com/photo-1558591710-4b4a1ae0f7b7?w=600&q=80" alt="Poster Design">
+      <div class="work-overlay"><div class="work-type">Poster Design</div><div class="work-name">Culture Festival</div></div>
+    </div>
+    <div class="work-item reveal">
+      <img src="https://images.unsplash.com/photo-1636622433525-127afdf3662d?w=600&q=80" alt="UI Design">
+      <div class="work-overlay"><div class="work-type">Packaging</div><div class="work-name">Lumé Skincare</div></div>
+    </div>
+    <div class="work-item reveal">
+      <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&q=80" alt="Logo Design">
+      <div class="work-overlay"><div class="work-type">Logo Design</div><div class="work-name">TerraFlow Co.</div></div>
+    </div>
+    <div class="work-item reveal">
+      <img src="https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=600&q=80" alt="Social Media">
+      <div class="work-overlay"><div class="work-type">Social Campaign</div><div class="work-name">Nova Fashion</div></div>
+    </div>
+    <div class="work-item reveal">
+      <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80" alt="Editorial">
+      <div class="work-overlay"><div class="work-type">Editorial</div><div class="work-name">Urban Pulse Mag</div></div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- PROCESS -->
+
+<section class="section">
+  <p class="section-label reveal">How I Work</p>
+  <h2 class="section-title reveal">My Design Process</h2>
+  <div class="process-list">
+    <div class="process-step reveal"><div class="step-num">01</div><div class="step-content"><h3>Discover & Research</h3><p>Every project begins with deep listening. I immerse myself in your brand, audience, and competitive landscape before a single line is drawn.</p></div></div>
+    <div class="process-step reveal"><div class="step-num">02</div><div class="step-content"><h3>Concept & Strategy</h3><p>Ideas are explored rapidly through sketches and mood boards. I present 2–3 bold directions with clear strategic rationale behind each.</p></div></div>
+    <div class="process-step reveal"><div class="step-num">03</div><div class="step-content"><h3>Craft & Refine</h3><p>The chosen direction is developed with meticulous attention to detail — typography, colour, spacing, and every micro-interaction considered.</p></div></div>
+    <div class="process-step reveal"><div class="step-num">04</div><div class="step-content"><h3>Deliver & Support</h3><p>Final assets are packaged meticulously with brand guidelines. I remain available post-delivery to ensure seamless implementation.</p></div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+
+<section class="page-cta">
+  <h2 class="reveal">Let's Build<br>Something Bold</h2>
+  <p class="reveal">Ready to elevate your brand? Let's collaborate on a project that makes people stop and stare.</p>
+  <a href="mailto:hello@danrey.com" class="btn-hire reveal">Hire Me</a><br>
+  <a href="index.html" class="back-btn reveal">← Return to Portfolio</a>
+</section>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+(function ar(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ar);})();
+
+// Reveal on scroll
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');}});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Tool bar animation
+const bars=document.querySelectorAll('.tool-fill');
+const barObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.style.width=e.target.dataset.w+'%';}else{e.target.style.width='0';}});
+},{threshold:.3});
+bars.forEach(b=>{b.style.width='0';barObs.observe(b);});
+</script>
+
+</body>
+</html>

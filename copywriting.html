@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content & Copywriting — Danrey</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--accent:#FFB300;--accent2:#FF8C00;--dark:#09090B;--surface:#111113;--card:#19191D;--text:#F5F0E8;--muted:#777;}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--dark);color:var(--text);cursor:none;overflow-x:hidden;}
+#cursor{position:fixed;width:10px;height:10px;border-radius:50%;background:var(--accent);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+#cursor-ring{position:fixed;width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(255,179,0,.4);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);}
+.grain{position:fixed;inset:0;pointer-events:none;z-index:200;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:128px;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:24px 56px;background:rgba(9,9,11,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.04);}
+.nav-brand{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.15em;color:#fff;text-decoration:none;}
+.nav-back{font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.5);text-decoration:none;display:flex;align-items:center;gap:8px;transition:color .2s;}
+.nav-back:hover{color:var(--accent);}
+.nav-skill-tag{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);background:rgba(255,179,0,.08);padding:4px 12px;border-radius:2px;border:1px solid rgba(255,179,0,.25);}
+
+.skill-hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:120px 56px 80px;position:relative;overflow:hidden;}
+.skill-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 30% 60%,rgba(255,179,0,.12) 0%,rgba(255,179,0,.03) 50%,transparent 70%);}
+.skill-hero-num{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(200px,25vw,360px);color:rgba(255,179,0,.05);position:absolute;right:-20px;top:50%;transform:translateY(-50%);line-height:1;pointer-events:none;letter-spacing:-.02em;}
+
+/* Animated typewriter headline */
+.typewriter-wrap{overflow:hidden;margin-bottom:32px;}
+.skill-title{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(64px,10vw,140px);line-height:.95;letter-spacing:-.01em;color:#fff;}
+.skill-title .highlight{color:var(–accent);}
+.skill-category{font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(–accent);margin-bottom:20px;}
+.skill-desc{font-size:18px;color:var(–muted);max-width:580px;line-height:1.7;margin-bottom:48px;}
+.hero-stats{display:flex;gap:56px;}
+.stat{display:flex;flex-direction:column;gap:4px;}
+.stat-num{font-family:‘Bebas Neue’,sans-serif;font-size:48px;color:var(–accent);line-height:1;}
+.stat-label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(–muted);}
+.divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,179,0,.25),transparent);}
+
+.section{padding:100px 56px;}
+.section-label{font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(–accent);margin-bottom:20px;}
+.section-title{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(40px,5vw,72px);color:#fff;margin-bottom:48px;line-height:1;}
+
+/* Services */
+.services-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:80px;}
+.service-card{background:var(–card);border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:40px 36px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s;}
+.service-card::before{content:’’;position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(–accent),transparent);opacity:0;transition:opacity .3s;}
+.service-card:hover{border-color:rgba(255,179,0,.2);transform:translateY(-4px);}
+.service-card:hover::before{opacity:1;}
+.svc-icon{font-size:36px;margin-bottom:20px;display:block;}
+.svc-title{font-family:‘Bebas Neue’,sans-serif;font-size:28px;color:#fff;letter-spacing:.04em;margin-bottom:12px;}
+.svc-desc{font-size:15px;color:var(–muted);line-height:1.7;}
+.svc-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+.svc-tag{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(–accent);background:rgba(255,179,0,.08);padding:4px 10px;border-radius:2px;}
+
+/* Testimonials */
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.testimonial{background:var(–card);border-radius:16px;padding:32px;border:1px solid rgba(255,255,255,.04);position:relative;}
+.testimonial::before{content:’\201C’;font-family:‘Bebas Neue’,sans-serif;font-size:80px;color:rgba(255,179,0,.15);position:absolute;top:16px;left:24px;line-height:1;}
+.t-text{font-size:15px;color:rgba(245,240,232,.75);line-height:1.7;margin-bottom:24px;position:relative;z-index:1;}
+.t-author{font-weight:700;font-size:14px;color:#fff;}
+.t-role{font-size:12px;color:var(–muted);margin-top:2px;}
+
+/* Writing samples */
+.samples-list{display:flex;flex-direction:column;gap:0;}
+.sample-item{display:flex;align-items:center;justify-content:space-between;padding:28px 0;border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer;transition:padding-left .2s;}
+.sample-item:hover{padding-left:12px;}
+.sample-left{display:flex;align-items:center;gap:24px;}
+.sample-num{font-family:‘Bebas Neue’,sans-serif;font-size:20px;color:rgba(255,179,0,.3);}
+.sample-info h3{font-size:17px;font-weight:600;color:#fff;margin-bottom:4px;}
+.sample-info p{font-size:13px;color:var(–muted);}
+.sample-type{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(–accent);background:rgba(255,179,0,.08);padding:4px 10px;border-radius:2px;}
+.sample-arrow{color:var(–muted);font-size:20px;transition:transform .2s;}
+.sample-item:hover .sample-arrow{transform:translateX(6px);color:var(–accent);}
+
+.page-cta{padding:100px 56px;text-align:center;background:linear-gradient(180deg,var(–dark) 0%,rgba(255,140,0,.04) 50%,var(–dark) 100%);}
+.page-cta h2{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(50px,7vw,100px);color:#fff;margin-bottom:20px;}
+.page-cta p{font-size:17px;color:var(–muted);max-width:480px;margin:0 auto 40px;line-height:1.7;}
+.btn-hire{display:inline-flex;align-items:center;gap:12px;background:var(–accent);color:#111;padding:16px 40px;border-radius:4px;font-family:‘Bebas Neue’,sans-serif;font-size:20px;letter-spacing:.1em;text-decoration:none;transition:background .2s,box-shadow .2s,transform .2s;font-weight:900;}
+.btn-hire:hover{background:#FFC420;box-shadow:0 8px 40px rgba(255,179,0,.35);transform:translateY(-2px);}
+.back-btn{display:inline-flex;align-items:center;gap:8px;margin-top:24px;color:var(–muted);text-decoration:none;font-size:14px;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;}
+.back-btn:hover{color:var(–accent);}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+</style>
+
+</head>
+<body>
+<div class="grain"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <a href="index.html" class="nav-brand">DANREY</a>
+  <span class="nav-skill-tag">Content & Copywriting</span>
+  <a href="index.html" class="nav-back">← Back to Portfolio</a>
+</nav>
+
+<section class="skill-hero">
+  <div class="skill-hero-bg"></div>
+  <div class="skill-hero-num">02</div>
+  <p class="skill-category reveal">Skill 02 / 04 — Words That Work</p>
+  <div class="typewriter-wrap">
+    <h1 class="skill-title reveal">Content &<br><span class="highlight">Copywriting</span></h1>
+  </div>
+  <p class="skill-desc reveal">Words that sell, stories that stick, content that converts. I craft language with the same precision a designer applies to pixels — purposeful, evocative, impossible to ignore.</p>
+  <div class="hero-stats reveal">
+    <div class="stat"><span class="stat-num">5+</span><span class="stat-label">Years Writing</span></div>
+    <div class="stat"><span class="stat-num">200+</span><span class="stat-label">Pieces Published</span></div>
+    <div class="stat"><span class="stat-num">35+</span><span class="stat-label">Brand Voices</span></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<section class="section">
+  <p class="section-label reveal">What I Do</p>
+  <h2 class="section-title reveal">Content Services</h2>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <span class="svc-icon">✍️</span>
+      <div class="svc-title">Brand Copywriting</div>
+      <p class="svc-desc">Headlines, taglines, and brand voice guidelines that carve out a distinct identity in noisy markets. I find the words that make brands unmistakable.</p>
+      <div class="svc-tags"><span class="svc-tag">Taglines</span><span class="svc-tag">Brand Voice</span><span class="svc-tag">Messaging</span></div>
+    </div>
+    <div class="service-card reveal">
+      <span class="svc-icon">📊</span>
+      <div class="svc-title">Content Strategy</div>
+      <p class="svc-desc">Full content roadmaps, editorial calendars, and topic clustering to build authority and consistent organic growth over time.</p>
+      <div class="svc-tags"><span class="svc-tag">SEO</span><span class="svc-tag">Editorial</span><span class="svc-tag">Strategy</span></div>
+    </div>
+    <div class="service-card reveal">
+      <span class="svc-icon">📱</span>
+      <div class="svc-title">Social Media Content</div>
+      <p class="svc-desc">Platform-native content that stops the scroll — from Instagram captions to LinkedIn thought leadership to Twitter/X threads that go viral.</p>
+      <div class="svc-tags"><span class="svc-tag">Instagram</span><span class="svc-tag">LinkedIn</span><span class="svc-tag">X/Twitter</span></div>
+    </div>
+    <div class="service-card reveal">
+      <span class="svc-icon">📧</span>
+      <div class="svc-title">Email Marketing</div>
+      <p class="svc-desc">Sequences that nurture leads and campaigns that drive action. Average open rates 40% above industry benchmark across all client accounts.</p>
+      <div class="svc-tags"><span class="svc-tag">Sequences</span><span class="svc-tag">Newsletters</span><span class="svc-tag">Campaigns</span></div>
+    </div>
+  </div>
+
+  <p class="section-label reveal">Writing Samples</p>
+  <h2 class="section-title reveal">Selected Work</h2>
+  <div class="samples-list">
+    <div class="sample-item reveal"><div class="sample-left"><div class="sample-num">01</div><div class="sample-info"><h3>The Rebrand That Saved a Business</h3><p>Case study — how a brand voice overhaul drove 340% revenue growth</p></div></div><span class="sample-type">Case Study</span><span class="sample-arrow">→</span></div>
+    <div class="sample-item reveal"><div class="sample-left"><div class="sample-num">02</div><div class="sample-info"><h3>Email Sequence for Lumé Skincare</h3><p>7-part welcome series with 68% open rate, 22% conversion</p></div></div><span class="sample-type">Email Copy</span><span class="sample-arrow">→</span></div>
+    <div class="sample-item reveal"><div class="sample-left"><div class="sample-num">03</div><div class="sample-info"><h3>30 Days of Social Content — TerraFlow</h3><p>Instagram & LinkedIn strategy that grew followers by 12K organically</p></div></div><span class="sample-type">Social Content</span><span class="sample-arrow">→</span></div>
+    <div class="sample-item reveal"><div class="sample-left"><div class="sample-num">04</div><div class="sample-info"><h3>Why Silence Sells: The Quiet Brand Manifesto</h3><p>Long-form editorial published in Brand Strategy Magazine</p></div></div><span class="sample-type">Editorial</span><span class="sample-arrow">→</span></div>
+    <div class="sample-item reveal"><div class="sample-left"><div class="sample-num">05</div><div class="sample-info"><h3>Apex Fintech Landing Page Copy</h3><p>Conversion-focused homepage copy — 18% higher signups vs previous</p></div></div><span class="sample-type">Web Copy</span><span class="sample-arrow">→</span></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<section class="section">
+  <p class="section-label reveal">What Clients Say</p>
+  <h2 class="section-title reveal">Testimonials</h2>
+  <div class="testimonials-grid">
+    <div class="testimonial reveal">
+      <p class="t-text">Danrey's copy transformed our entire customer experience. Our email revenue tripled in the first quarter after the rebrand.</p>
+      <div class="t-author">Amara Nwosu</div><div class="t-role">CMO, Lumé Skincare</div>
+    </div>
+    <div class="testimonial reveal">
+      <p class="t-text">Every word was intentional. Our new brand voice finally feels like us — bold, warm, and completely distinctive in a saturated market.</p>
+      <div class="t-author">James Okafor</div><div class="t-role">Founder, TerraFlow Co.</div>
+    </div>
+    <div class="testimonial reveal">
+      <p class="t-text">The content strategy Danrey built is still driving results 18 months later. Organic traffic up 280%. I couldn't recommend more highly.</p>
+      <div class="t-author">Sofia Chen</div><div class="t-role">Head of Growth, Apex Fintech</div>
+    </div>
+  </div>
+</section>
+
+<section class="page-cta">
+  <h2 class="reveal">Words That<br>Make It Happen</h2>
+  <p class="reveal">Got a product that deserves better copy? A brand that needs a voice? Let's talk.</p>
+  <a href="mailto:hello@danrey.com" class="btn-hire reveal">Start a Project</a><br>
+  <a href="index.html" class="back-btn reveal">← Return to Portfolio</a>
+</section>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+(function ar(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ar);})();
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+
+</body>
+</html>

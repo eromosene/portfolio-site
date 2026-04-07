@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photography — Danrey</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--accent:#C9F0FF;--accent2:#60C8F0;--dark:#070A0D;--surface:#0E1317;--card:#141A20;--text:#E8F4F8;--muted:#6A8090;}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--dark);color:var(--text);cursor:none;overflow-x:hidden;}
+#cursor{position:fixed;width:10px;height:10px;border-radius:50%;background:var(--accent2);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+#cursor-ring{position:fixed;width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(96,200,240,.4);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);}
+.grain{position:fixed;inset:0;pointer-events:none;z-index:200;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:128px;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:24px 56px;background:rgba(7,10,13,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.04);}
+.nav-brand{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.15em;color:#fff;text-decoration:none;}
+.nav-back{font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s;}
+.nav-back:hover{color:var(--accent2);}
+.nav-skill-tag{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent2);background:rgba(96,200,240,.08);padding:4px 12px;border-radius:2px;border:1px solid rgba(96,200,240,.2);}
+
+/* Full-bleed hero with parallax feel */
+.skill-hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:end;padding:120px 56px 80px;position:relative;overflow:hidden;gap:60px;}
+.hero-left{position:relative;z-index:2;}
+.hero-right{position:relative;z-index:2;display:flex;flex-direction:column;gap:16px;}
+.skill-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 50% 80% at 70% 30%,rgba(96,200,240,.1) 0%,rgba(96,200,240,.02) 50%,transparent 70%);}
+.skill-hero-num{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(200px,25vw,360px);color:rgba(96,200,240,.04);position:absolute;left:-20px;bottom:-40px;line-height:1;pointer-events:none;letter-spacing:-.02em;}
+.skill-category{font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(–accent2);margin-bottom:20px;}
+.skill-title{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(64px,8vw,120px);line-height:.95;letter-spacing:-.01em;color:#fff;margin-bottom:32px;}
+.skill-desc{font-size:17px;color:var(–muted);line-height:1.75;margin-bottom:48px;}
+.hero-stats{display:flex;gap:40px;}
+.stat{display:flex;flex-direction:column;gap:4px;}
+.stat-num{font-family:‘Bebas Neue’,sans-serif;font-size:44px;color:var(–accent2);line-height:1;}
+.stat-label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(–muted);}
+
+/* Hero photo stack */
+.photo-stack{position:relative;height:500px;}
+.stack-img{position:absolute;border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+.stack-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.stack-1{width:280px;height:360px;top:0;right:0;z-index:3;}
+.stack-2{width:240px;height:300px;top:80px;right:200px;z-index:2;opacity:.85;}
+.stack-3{width:200px;height:260px;top:160px;right:360px;z-index:1;opacity:.65;}
+
+.divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(96,200,240,.2),transparent);}
+.section{padding:100px 56px;}
+.section-label{font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(–accent2);margin-bottom:20px;}
+.section-title{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(40px,5vw,72px);color:#fff;margin-bottom:48px;line-height:1;}
+
+/* Masonry-style gallery */
+.gallery{columns:3;gap:16px;margin-bottom:80px;}
+.gallery-item{break-inside:avoid;margin-bottom:16px;border-radius:10px;overflow:hidden;position:relative;cursor:pointer;}
+.gallery-item img{width:100%;display:block;transition:transform .5s cubic-bezier(.2,.8,.2,1),filter .4s;}
+.gallery-item:hover img{transform:scale(1.04);filter:brightness(1.08) saturate(1.1);}
+.gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,10,13,.8) 0%,transparent 50%);opacity:0;transition:opacity .3s;display:flex;flex-direction:column;justify-content:flex-end;padding:20px;}
+.gallery-item:hover .gallery-overlay{opacity:1;}
+.g-title{font-weight:700;font-size:16px;color:#fff;}
+.g-type{font-size:11px;color:var(–accent2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
+
+/* Specialties */
+.spec-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.spec-card{background:var(–card);border:1px solid rgba(255,255,255,.05);border-radius:14px;padding:32px 24px;text-align:center;transition:border-color .3s,transform .3s;}
+.spec-card:hover{border-color:rgba(96,200,240,.25);transform:translateY(-4px);}
+.spec-icon{font-size:32px;margin-bottom:16px;display:block;}
+.spec-name{font-family:‘Bebas Neue’,sans-serif;font-size:22px;color:#fff;letter-spacing:.04em;margin-bottom:8px;}
+.spec-desc{font-size:13px;color:var(–muted);line-height:1.6;}
+
+.page-cta{padding:100px 56px;text-align:center;background:linear-gradient(180deg,var(–dark) 0%,rgba(96,200,240,.03) 50%,var(–dark) 100%);}
+.page-cta h2{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(50px,7vw,100px);color:#fff;margin-bottom:20px;}
+.page-cta p{font-size:17px;color:var(–muted);max-width:480px;margin:0 auto 40px;line-height:1.7;}
+.btn-hire{display:inline-flex;align-items:center;gap:12px;background:transparent;color:var(–accent2);padding:16px 40px;border-radius:4px;font-family:‘Bebas Neue’,sans-serif;font-size:20px;letter-spacing:.1em;text-decoration:none;border:1.5px solid var(–accent2);transition:background .2s,box-shadow .2s,color .2s,transform .2s;}
+.btn-hire:hover{background:var(–accent2);color:var(–dark);box-shadow:0 8px 40px rgba(96,200,240,.3);transform:translateY(-2px);}
+.back-btn{display:inline-flex;align-items:center;gap:8px;margin-top:24px;color:var(–muted);text-decoration:none;font-size:14px;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;}
+.back-btn:hover{color:var(–accent2);}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+</style>
+
+</head>
+<body>
+<div class="grain"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <a href="index.html" class="nav-brand">DANREY</a>
+  <span class="nav-skill-tag">Photography</span>
+  <a href="index.html" class="nav-back">← Back</a>
+</nav>
+
+<section class="skill-hero">
+  <div class="skill-hero-bg"></div>
+  <div class="skill-hero-num">03</div>
+  <div class="hero-left">
+    <p class="skill-category reveal">Skill 03 / 04 — Light & Lens</p>
+    <h1 class="skill-title reveal">Photo-<br>graphy</h1>
+    <p class="skill-desc reveal">I don't just take pictures — I capture the decisive moment, the quiet tension, the story that exists between blinks. Commercial, portrait, editorial: every frame intentional.</p>
+    <div class="hero-stats reveal">
+      <div class="stat"><span class="stat-num">7+</span><span class="stat-label">Years Shooting</span></div>
+      <div class="stat"><span class="stat-num">500+</span><span class="stat-label">Sessions Done</span></div>
+      <div class="stat"><span class="stat-num">15+</span><span class="stat-label">Publications</span></div>
+    </div>
+  </div>
+  <div class="hero-right reveal">
+    <div class="photo-stack">
+      <div class="stack-img stack-1"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=85&fit=crop&crop=face" alt="Portrait"></div>
+      <div class="stack-img stack-2"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80" alt="Landscape"></div>
+      <div class="stack-img stack-3"><img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=400&q=80" alt="Street"></div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<section class="section">
+  <p class="section-label reveal">Specialties</p>
+  <h2 class="section-title reveal">What I Shoot</h2>
+  <div class="spec-grid">
+    <div class="spec-card reveal"><span class="spec-icon">🧑‍🎤</span><div class="spec-name">Portrait</div><p class="spec-desc">Environmental and studio portraits that reveal character and depth</p></div>
+    <div class="spec-card reveal"><span class="spec-icon">🏙</span><div class="spec-name">Commercial</div><p class="spec-desc">Product and brand photography that sells without saying a word</p></div>
+    <div class="spec-card reveal"><span class="spec-icon">📰</span><div class="spec-name">Editorial</div><p class="spec-desc">Magazine and press photography with a cinematic, narrative edge</p></div>
+    <div class="spec-card reveal"><span class="spec-icon">🌅</span><div class="spec-name">Landscape</div><p class="spec-desc">Long exposure, golden hour, and dramatic atmospheric captures</p></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<section class="section">
+  <p class="section-label reveal">Gallery</p>
+  <h2 class="section-title reveal">Selected Shots</h2>
+  <div class="gallery">
+    <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=500&q=85&fit=crop&crop=face" alt="Portrait"><div class="gallery-overlay"><div class="g-type">Portrait</div><div class="g-title">The Gaze — Series I</div></div></div>
+    <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&q=80" alt="Landscape"><div class="gallery-overlay"><div class="g-type">Landscape</div><div class="g-title">Last Light, Atlas Range</div></div></div>
+    <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=500&q=80" alt="Street"><div class="gallery-overlay"><div class="g-type">Street</div><div class="g-title">City Pulse 2023</div></div></div>
+    <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&q=80" alt="Commercial"><div class="gallery-overlay"><div class="g-type">Commercial</div><div class="g-title">Lumé Product Campaign</div></div></div>
+    <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1554080353-a576cf803bda?w=500&q=85" alt="Portrait 2"><div class="gallery-overlay"><div class="g-type">Editorial</div><div class="g-title">Urban Magazine — Cover</div></div></div>
+    <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1519834785169-98be25ec3f84?w=500&q=80" alt="Concert"><div class="gallery-overlay"><div class="g-type">Event</div><div class="g-title">Afrobeats Lagos 2024</div></div></div>
+    <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1502691876148-a84978e59af8?w=500&q=80" alt="Nature"><div class="gallery-overlay"><div class="g-type">Nature</div><div class="g-title">Quiet Hours</div></div></div>
+    <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1613336026275-d6d473084e85?w=500&q=80" alt="Fashion"><div class="gallery-overlay"><div class="g-type">Fashion</div><div class="g-title">Nova SS Collection</div></div></div>
+  </div>
+</section>
+
+<section class="page-cta">
+  <h2 class="reveal">Book a<br>Session</h2>
+  <p class="reveal">Whether it's a full campaign shoot or an intimate portrait session, let's create images that last forever.</p>
+  <a href="mailto:hello@danrey.com" class="btn-hire reveal">Book Now</a><br>
+  <a href="index.html" class="back-btn reveal">← Return to Portfolio</a>
+</section>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+(function ar(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ar);})();
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+
+</body>
+</html>
